@@ -2,13 +2,15 @@ library(shiny)
 library(shinydashboard)
 library(shinyAce)
 
+choices = c('count', 'totalscore')
+
 shinyUI(
   dashboardPage(skin = "blue",
                 dashboardHeader(title="Hacker News Stories"),
                 dashboardSidebar(sidebarMenu(menuItem("View Spider Code", tabName="scraper", icon=icon("table")),
                                              menuItem("Top Authors", tabName="authors", icon=icon("bar-chart")),
                                              menuItem("Top Domains", tabName="domains", icon=icon("bar-chart")),
-                                             menuItem("Submission Time Analysis", tabName="time", icon=icon("bar-chart")))),
+                                             menuItem("Submission Time Analysis", tabName="hours", icon=icon("bar-chart")))),
                 dashboardBody(tabItems(
                   tabItem(tabName = "scraper",
                     fluidRow(
@@ -23,8 +25,28 @@ shinyUI(
                       aceEditor("ace2", value=itemcode, mode="python")))),
                   tabItem(tabName = "authors",
                       fluidRow(
-                        box("Hi")
-                      ))
-                  ))
+                        box("Top users on Hacker News"),
+                        selectizeInput(inputId="authorChoice",
+                                       label="Sort method:",
+                                       choices=choices)),
+                      fluidRow(plotOutput("authorPlot"))
+                  ),
+                  tabItem(tabName = "domains",
+                          fluidRow(
+                            box("Top domains on Hacker News"),
+                            selectizeInput(inputId="domainChoice",
+                                           label="Sort method:",
+                                           choices=choices)),
+                          fluidRow(plotOutput("domainPlot"))
+                  ),
+                  tabItem(tabName = "hours",
+                          fluidRow(
+                            box("Total Score by Hour of Story Submission"),
+                            selectizeInput(inputId="hourChoice",
+                                           label="Sort method:",
+                                           choices=choices)),
+                          fluidRow(plotOutput("hourPlot"))
+                  )
+                ))
   )
 )
