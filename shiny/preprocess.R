@@ -1,20 +1,28 @@
 library(dplyr)
 
+#Domain extraction function
 domain <- function(x) unlist(sapply(strsplit(gsub("http://|https://|www\\.", "", x), "/"), function (y) ifelse(length(y) > 0, y[[1]], list(""))))
 
+#Read in data
 hn_stories <- read.csv("./hn_stories.csv", stringsAsFactors=FALSE)
 
+#Filter missing data and select relevant columns
 hndata <- hn_stories %>% filter(!is.na(time) & author != "") %>% select(id, time, time_ts, title, url, text, author, score)
 
+#Extract info from dates
 hndata <- hndata %>% mutate(theyear=as.numeric(substr(time_ts, 1, 4)))
 hndata <- hndata %>% mutate(hour=as.numeric(substr(time_ts, 12, 13)))
+
+#Extract domains from urls
 hndata$thedomain = sapply(hndata$url, domain)
 
+#Time measured in seconds from beginning of Unix epoch.  Filter old stories from before 2014.
 beginning_of_2014 <- 1388534400
 beginning_of_2015 <- 1420070400
 
 hndata <- hndata %>% filter(time > beginning_of_2014)
 
+#Calculate stats for plotting
 top_authors <- hndata %>% group_by(author) %>% summarize(count=n(), totalscore=sum(score), averagescore=sum(score)/n()) %>% arrange(desc(count))
 top_domains <- hndata %>% filter(thedomain != "") %>% group_by(thedomain) %>% summarize(count=n(), totalscore=sum(score), averagescore=sum(score)/n()) %>% arrange(desc(count))
 hour_scores <- hndata %>% group_by(hour) %>% summarize(count=n(), totalscore=sum(score), averagescore=sum(score)/n())
@@ -44,6 +52,7 @@ for (i in 1:length(programming_languages)) {
   ))
 }
 
+#Save to Rda files
 saveRDS(hndata, "./cleaned_data.Rda")
 saveRDS(top_authors, "./top_authors.Rda")
 saveRDS(top_domains, "./top_domains.Rda")

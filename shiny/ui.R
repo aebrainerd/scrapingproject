@@ -2,6 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyAce)
 
+#Column names and user-friendly labels
 choices = c('count', 'totalscore', 'averagescore')
 displaychoices = c('Story Count', 'Total Score', 'Average Score')
 
@@ -41,7 +42,8 @@ shinyUI(
                   ),
                   tabItem(tabName = "hours",
                           fluidRow(
-                            p("Best hour to submit a story in UTC time zone.  New York City is 4 hours behind this and San Francisco is 7 hours behind."),
+                            p("Best hour to submit a story in UTC time zone."), 
+                            p("New York City is 4 hours behind this and San Francisco is 7 hours behind."),
                             selectizeInput(inputId="hourChoice",
                                            label="Sort method:",
                                            choices=displaychoices)),

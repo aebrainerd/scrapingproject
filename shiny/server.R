@@ -4,6 +4,8 @@ library(scales)
 
 function(input, output) {
 
+  #Reactive extraction of the right column
+  
   myAuthorData <- reactive({
     if (input$authorChoice == 'Story Count') {
       top_authors %>% select(author, val=count)
@@ -52,6 +54,8 @@ function(input, output) {
     }
   })
   
+  #Make plots
+  
 	output$authorPlot <- renderPlot({
 			ggplot(head(myAuthorData(), 25), aes(x=reorder(author,val), y=val)) + 
     		geom_bar(stat="identity", fill="blue") + 
@@ -61,7 +65,7 @@ function(input, output) {
    			                                        ifelse(input$authorChoice=="Total Score",
    			                                               "Total Score",
    			                                               "Average Score"))) +  
-	      scale_y_continuous(labels = comma)
+	      scale_y_continuous(labels = comma, expand=c(0,0)) 
 		})
 
 	output$domainPlot <- renderPlot({
@@ -72,7 +76,7 @@ function(input, output) {
 	                                      "Story Count",
 	                                      ifelse(input$domainChoice=="Total Score",
 	                                             "Total Score", "Average Score"))) +
-	    scale_y_continuous(labels = comma)
+	    scale_y_continuous(labels = comma, expand=c(0,0))
 	})
 
 	output$hourPlot <- renderPlot({
@@ -82,7 +86,7 @@ function(input, output) {
 	    xlab("Hour of Submission") + ylab(ifelse(input$hourChoice=="Story Count",
 	                                             "Story Count",
 	                                             ifelse(input$hourChoice=="Total Score", "Total Score", "Average Score"))) +
-	    scale_y_continuous(labels = comma)
+	    scale_y_continuous(labels = comma, expand=c(0,0))
 	})	
 	
 	output$languagePlot <- renderPlot({
@@ -92,7 +96,7 @@ function(input, output) {
 	    xlab("Programming Language") + ylab(ifelse(input$languageChoice=="Story Count",
 	                                             "Story Count",
 	                                             ifelse(input$hourChoice=="Total Score", "Total Score", "Average Score"))) +
-	    scale_y_continuous(labels = comma)
+	    scale_y_continuous(labels = comma, expand=c(0,0))
 	})	
 	
 }
