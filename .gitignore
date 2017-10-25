@@ -1,3 +1,4 @@
 *.csv
 shiny/hn_stories.csv
-shiny/rsconnect
+shiny/rsconnect/*
+shiny/.Rhistory
