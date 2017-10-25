@@ -1,5 +1,6 @@
 *.csv
 *.pyc
+.gitignore
 shiny/hn_stories.csv
 shiny/rsconnect/
 shiny/.Rhistory
