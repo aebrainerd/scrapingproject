@@ -16,9 +16,3 @@ class HnewsItem(scrapy.Item):
     id_ = scrapy.Field()
     comments = scrapy.Field()
     
-class HnewsComment(scrapy.Item):
-	id_ = scrapy.Field()
-	username = scrapy.Field()
-	text = scrapy.Field()
-	indent = scrapy.Field()
-	

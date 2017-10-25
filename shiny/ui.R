@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinyAce)
 
 choices = c('count', 'totalscore')
+displaychoices = c('Story Count', 'Total Score')
 
 shinyUI(
   dashboardPage(skin = "blue",
@@ -28,7 +29,7 @@ shinyUI(
                         box("Top users on Hacker News"),
                         selectizeInput(inputId="authorChoice",
                                        label="Sort method:",
-                                       choices=choices)),
+                                       choices=displaychoices)),
                       fluidRow(plotOutput("authorPlot"))
                   ),
                   tabItem(tabName = "domains",
@@ -36,7 +37,7 @@ shinyUI(
                             box("Top domains on Hacker News"),
                             selectizeInput(inputId="domainChoice",
                                            label="Sort method:",
-                                           choices=choices)),
+                                           choices=displaychoices)),
                           fluidRow(plotOutput("domainPlot"))
                   ),
                   tabItem(tabName = "hours",
@@ -44,7 +45,7 @@ shinyUI(
                             box("Best time to submit a story"),
                             selectizeInput(inputId="hourChoice",
                                            label="Sort method:",
-                                           choices=choices)),
+                                           choices=displaychoices)),
                           fluidRow(plotOutput("hourPlot"))
                   )
                 ))

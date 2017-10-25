@@ -3,24 +3,13 @@ from __future__ import absolute_import
 import scrapy
 from scrapy.spiders import Rule, CrawlSpider
 from scrapy.linkextractors import LinkExtractor
-from hnews.items import HnewsItem, HnewsComment
+from hnews.items import HnewsItem
 
 class HackerNewsSpider(CrawlSpider):
     name = 'hnews'
     allowed_domains = ['news.ycombinator.com']
     start_urls = ['https://news.ycombinator.com/news?p=1']
-    rules = [Rule(LinkExtractor(allow=r'news\?p=[0-9]'), follow=True, callback="parse_news"),
-             Rule(LinkExtractor(allow=r'item\?id=[0=9]*'), follow=False, callback="parse_comments")]
-
-    def parse_comments(self, response):
-        comment_tree = response.css(".comment-tree").xpath("tr[@id]")
-        for row in comment_tree:
-            item = HnewsComment()
-            item['id_'] = row.xpath('@id').extract_first()
-            item['username'] = row.css(".hnuser::text").extract_first()
-            item['text'] = "\n\n".join(row.css(".comment").xpath(".//*/text()").extract()[:-6])
-            item['indent'] = int(row.css(".ind").xpath("./img/@width").extract_first())/40
-            yield item
+    rules = [Rule(LinkExtractor(allow=r'news\?p=[0-9]'), follow=True, callback="parse_news")]
 
     def parse_news(self, response):
         itemtable = response.css(".itemlist")
