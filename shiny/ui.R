@@ -2,16 +2,18 @@ library(shiny)
 library(shinydashboard)
 library(shinyAce)
 
-choices = c('count', 'totalscore')
-displaychoices = c('Story Count', 'Total Score')
+choices = c('count', 'totalscore', 'averagescore')
+displaychoices = c('Story Count', 'Total Score', 'Average Score')
 
 shinyUI(
   dashboardPage(skin = "blue",
                 dashboardHeader(title="Hacker News Stories"),
-                dashboardSidebar(sidebarMenu(menuItem("View Spider Code", tabName="scraper", icon=icon("table")),
+                dashboardSidebar(sidebarUserPanel("", image = "http://is1.mzstatic.com/image/thumb/Purple2/v4/14/b6/67/14b66795-98da-8618-5a6c-e84846162b25/source/1200x630bb.jpg"),
+                                 sidebarMenu(menuItem("View Spider Code", tabName="scraper", icon=icon("file-code-o")),
                                              menuItem("Top Authors", tabName="authors", icon=icon("bar-chart")),
                                              menuItem("Top Domains", tabName="domains", icon=icon("bar-chart")),
-                                             menuItem("Submission Time Analysis", tabName="hours", icon=icon("bar-chart")))),
+                                             menuItem("Submission Time Analysis", tabName="hours", icon=icon("bar-chart")),
+                                             menuItem("Programming Languages", tabName="languages", icon=icon("bar-chart")))),
                 dashboardBody(tabItems(
                   tabItem(tabName = "scraper",
                     fluidRow(
@@ -23,7 +25,7 @@ shinyUI(
                       aceEditor("ace2", value=itemcode, mode="python"))),
                   tabItem(tabName = "authors",
                       fluidRow(
-                        box("Top users on Hacker News"),
+                        p("Top users on Hacker News"),
                         selectizeInput(inputId="authorChoice",
                                        label="Sort method:",
                                        choices=displaychoices)),
@@ -31,7 +33,7 @@ shinyUI(
                   ),
                   tabItem(tabName = "domains",
                           fluidRow(
-                            box("Top domains on Hacker News"),
+                            p("Top domains on Hacker News"),
                             selectizeInput(inputId="domainChoice",
                                            label="Sort method:",
                                            choices=displaychoices)),
@@ -39,11 +41,19 @@ shinyUI(
                   ),
                   tabItem(tabName = "hours",
                           fluidRow(
-                            box("Best time to submit a story"),
+                            p("Best hour to submit a story in UTC time zone.  New York City is 4 hours behind this and San Francisco is 7 hours behind."),
                             selectizeInput(inputId="hourChoice",
                                            label="Sort method:",
                                            choices=displaychoices)),
                           fluidRow(plotOutput("hourPlot"))
+                  ),
+                  tabItem(tabName = "languages",
+                          fluidRow(
+                            p("Programming languages mentioned in Hacker News story titles."),
+                            selectizeInput(inputId="languageChoice",
+                                           label="Sort method:",
+                                           choices=displaychoices)),
+                          fluidRow(plotOutput("languagePlot"))
                   )
                 ))
   )
