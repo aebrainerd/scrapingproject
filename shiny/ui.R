@@ -41,7 +41,7 @@ shinyUI(
                   ),
                   tabItem(tabName = "hours",
                           fluidRow(
-                            box("Total Score by Hour of Story Submission"),
+                            box("Best time to submit a story"),
                             selectizeInput(inputId="hourChoice",
                                            label="Sort method:",
                                            choices=choices)),
