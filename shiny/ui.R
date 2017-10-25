@@ -15,15 +15,12 @@ shinyUI(
                 dashboardBody(tabItems(
                   tabItem(tabName = "scraper",
                     fluidRow(
-                      box("The data is scraped from ", a("Hacker News", href="http://news.ycombinator.com/"), " using the following Python app making use of the scrapy library:",
-                      br(),
-                      br(),
-                      aceEditor("ace", value=spidercode, mode="python"),
-                      br(),
-                      "The spider relies on the following items.py file:",
-                      br(),
-                      br(),
-                      aceEditor("ace2", value=itemcode, mode="python")))),
+                      p("The data is scraped from ", 
+                          a("Hacker News", href="http://news.ycombinator.com/"), 
+                          " using the following Python app making use of the scrapy library:"),
+                      p(aceEditor("ace", value=spidercode, mode="python")),
+                      p("The spider relies on the following items.py file:"),
+                      aceEditor("ace2", value=itemcode, mode="python"))),
                   tabItem(tabName = "authors",
                       fluidRow(
                         box("Top users on Hacker News"),
